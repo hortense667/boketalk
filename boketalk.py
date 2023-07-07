@@ -15,7 +15,7 @@ def translate_to_japanese(text):
 def generate_joke(text):
     response = openai.Completion.create(
         engine="GPT-4",
-        prompt=f"Create a ironical joke based on this text:\n{text}",
+        prompt=f"Create a joke based on this text:\n{text}",
         max_tokens=60
     )
     return response.choices[0].text.strip()
