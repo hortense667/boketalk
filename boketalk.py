@@ -10,7 +10,7 @@ def detect_language(text):
 
 def translate(text, target_language):
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="GPT-4",
         prompt=f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese' if target_language == 'ja' else 'English'}:\n{text}",
         max_tokens=60
     )
@@ -18,8 +18,8 @@ def translate(text, target_language):
 
 def generate_joke(text):
     response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=f"Create a ironical joke based on this text:\n{text}",
+        engine="GPT-4",
+        prompt=f"Create a ironical bad joke based on this text:\n{text}",
         max_tokens=60
     )
     return response.choices[0].text.strip()
