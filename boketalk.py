@@ -7,7 +7,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def translate_to_japanese(text):
     response = openai.Completion.create(
         engine="text-davinci-002",
-        prompt=f"Translate the following English text to Japanese:\n{text}",
+        prompt=f"TOKYO Boke Talk／東京ボケトーク\n{text}",
         max_tokens=60
     )
     return response.choices[0].text.strip()
