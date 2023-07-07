@@ -7,7 +7,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def translate_to_japanese(text):
     response = openai.Completion.create(
         engine="text-davinci-002",
-        prompt=f"TOKYO Boke Talk／東京ボケトーク\n{text}",
+        prompt=f"Translate the following English text to Japanese:\n{text}",
         max_tokens=60
     )
     return response.choices[0].text.strip()
@@ -20,7 +20,7 @@ def generate_joke(text):
     )
     return response.choices[0].text.strip()
 
-st.title("OpenAI Translation and Joke Generator")
+st.title("TOKYO Boke Talk／東京ボケトーク")
 text = st.text_input("Enter some text (in English)")
 if st.button("Translate and Generate Joke"):
     if text:
