@@ -11,7 +11,7 @@ def detect_language(text):
 def translate(text, target_language):
     response = openai.Completion.create(
         engine="text-davinci-002",
-        prompt=f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese' if target_language == 'ja' else 'English'}:\n{text}",
+        prompt=f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします' if target_language == 'ja' else 'English'}:\n{text}",
         max_tokens=60
     )
     return response.choices[0].text.strip()
