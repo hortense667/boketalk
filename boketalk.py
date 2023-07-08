@@ -19,12 +19,12 @@ def translate(text, target_language):
 def generate_joke(text):
     response = openai.Completion.create(
         engine="text-davinci-002",
-        prompt=f"Create a Bokeh joke based on this text:\n{text}",
+        prompt=f"Create a funny joke based on this text:\n{text}",
         max_tokens=60
     )
     return response.choices[0].text.strip()
 
-st.title("東京ボケトーク TOKYO Bokeh Talk")
+st.title("東京ボケトーク / TOKYO Boke Talk")
 text = st.text_input("Enter some text")
 if st.button("Translate and Generate Joke"):
     if text:
