@@ -24,7 +24,12 @@ def generate_joke(text):
     )
     return response.choices[0].text.strip()
 
-st.title("東京ボケトーク / TOKYO Boke Talk")
+st.title("TOKYO Boke Talk／東京ボケトーク")
+st.markdown(
+"""
+-- ver.0.1 -- 2023/07/08　 [@hortense667](https://twitter.com/hortense667)　 
+"""
+)
 text = st.text_input("Enter some text")
 if st.button("Translate and Generate Joke"):
     if text:
