@@ -24,7 +24,7 @@ def generate_joke(text):
     )
     return response.choices[0].text.strip()
 
-st.title("Tokyo Bokeh Talk/東京ボケトーク")
+st.title("TOKYO Bokeh Talk・東京ボケトーク")
 text = st.text_input("Enter some text")
 if st.button("Translate and Generate Joke"):
     if text:
