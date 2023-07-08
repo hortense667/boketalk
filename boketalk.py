@@ -19,7 +19,7 @@ def translate(text, target_language):
 def generate_joke(text):
     response = openai.Completion.create(
         engine="text-davinci-002",
-        prompt=f"Create a ironical joke based on this text:\n{text}",
+        prompt=f"Create a dark joke based on this text:\n{text}",
         max_tokens=60
     )
     return response.choices[0].text.strip()
