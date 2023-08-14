@@ -8,27 +8,32 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def detect_language(text):
     return detect(text)
 
-def translate(text, target_language):
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}:\n{text}",
-        max_tokens=60
+def translate(text, target_language): 
+    prompt =f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}:\n{text}"
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=messages,
+        temperature=0, # this is the degree of randomness of the model's output
     )
     return response.choices[0].text.strip()
 
-def generate_joke(text):
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=f"Create a funny joke based on this text:\n{text}",
-        max_tokens=60
+def generate_joke(text): 
+    prompt =f"Create a funny joke based on this text:\n{text}"
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=messages,
+        temperature=0.5, # this is the degree of randomness of the model's output
     )
     return response.choices[0].text.strip()
+
 
 st.title("TOKYO Boke Talk／東京ボケトーク")
 
 st.markdown(
 """
--- ver.0.1 -- 2023/07/08 [@hortense667](https://twitter.com/hortense667)　 
+-- ver.0.2 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
 """
 )
 
