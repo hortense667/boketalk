@@ -19,7 +19,7 @@ def translate(text, target_language):
     return response.choices[0].message["content"]
 
 def generate_joke(text): 
-    prompt =f"Create a funny joke based on this text:\n{text}"
+    prompt =f"Create a silly joke based on this text:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model="gpt-4",
@@ -33,7 +33,7 @@ st.title("TOKYO Boke Talk／東京ボケトーク")
 
 st.markdown(
 """
--- ver.0.23 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
+-- ver.0.24 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
 """
 )
 
