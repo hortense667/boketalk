@@ -16,7 +16,7 @@ def translate(text, target_language):
         messages=messages,
         temperature=0, # this is the degree of randomness of the model's output
     )
-    return response.choices[0].text.strip()
+    return response.choices[0].message["content"]
 
 def generate_joke(text): 
     prompt =f"Create a funny joke based on this text:\n{text}"
@@ -26,7 +26,7 @@ def generate_joke(text):
         messages=messages,
         temperature=0.5, # this is the degree of randomness of the model's output
     )
-    return response.choices[0].text.strip()
+    return response.choices[0].message["content"]
 
 
 st.title("TOKYO Boke Talk／東京ボケトーク")
