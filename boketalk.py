@@ -33,7 +33,7 @@ st.title("TOKYO Boke Talk／東京ボケトーク")
 
 st.markdown(
 """
--- ver.0.22 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
+-- ver.0.23 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
 """
 )
 
