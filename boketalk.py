@@ -24,7 +24,7 @@ def generate_joke(text):
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=messages,
-        temperature=0, # this is the degree of randomness of the model's output
+        temperature=0.7, # this is the degree of randomness of the model's output
     )
     return response.choices[0].message["content"]
 
