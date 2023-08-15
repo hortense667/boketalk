@@ -12,17 +12,17 @@ def translate(text, target_language):
     prompt =f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=messages,
         temperature=0, # this is the degree of randomness of the model's output
     )
     return response.choices[0].message["content"]
 
 def generate_joke(text): 
-    prompt =f"Create a Surrealistic joke based on this text:\n{text}"
+    prompt =f"Create a puzzle-like joke based on this text:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=messages,
         temperature=0.7, # this is the degree of randomness of the model's output
     )
@@ -33,7 +33,7 @@ st.title("TOKYO Boke Talk／東京ボケトーク")
 
 st.markdown(
 """
--- ver.0.29 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
+-- ver.0.291 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
 """
 )
 
