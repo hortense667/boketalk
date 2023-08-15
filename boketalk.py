@@ -8,8 +8,18 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def detect_language(text):
     return detect(text)
 
-def translate(text, target_language, model_name, temperature): 
-    prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}:\n{text}"
+def translate(text, target_language, model_name, temperature, region): 
+    region_prefix_map = {
+        "Standard": "",
+        "Osaka": "大阪弁で",
+        "Kyoto": "京都弁で",
+        "Nagoya": "名古屋弁で",
+        "Kagoshima": "鹿児島弁で",
+        "Tsugaru": "津軽弁で",
+        "Okinawa": "沖縄弁で"
+    }
+    prefix = region_prefix_map[region]
+    prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {prefix} {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model_name,
