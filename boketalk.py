@@ -19,8 +19,17 @@ def translate(text, target_language, model_name, temperature):
     return response.choices[0].message["content"]
 
 def generate_joke(text, model_name, temperature, joke_type, region): 
-    kansai_prefix = "関西弁で" if region == "kansai region of Japan" else ""
-    prompt = f"Create a {kansai_prefix} {joke_type} joke based on this text:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a {kansai_prefix} joke based on this text:\n{text}"
+    region_prefix_map = {
+        "Standard": "",
+        "Osaka": "大阪弁で",
+        "Kyoto": "京都弁で",
+        "Nagoya": "名古屋弁で",
+        "Kagoshima": "鹿児島弁で",
+        "Tsugaru": "津軽弁で",
+        "Okinawa": "沖縄弁で"
+    }
+    prefix = region_prefix_map[region]
+    prompt = f"Create a {prefix} {joke_type} joke based on this text:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a {prefix} joke based on this text:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model_name,
@@ -43,7 +52,7 @@ model_name = st.sidebar.radio('Choose a language model', ['gpt-4', 'gpt-3.5-turb
 temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.7)
 joke_type_options = ['なにも指定しない', '自分で指定する', 'funny', 'heartworming', 'clean', 'childish', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'dirty', 'self-deprecating', 'Potty']
 joke_type = st.sidebar.selectbox('ジョークの種類', joke_type_options)
-regions = ["Standard", "kansai region of Japan"]
+regions = ["Standard", "Osaka", "Kyoto", "Nagoya", "Kagoshima", "Tsugaru", "Okinawa"]
 region = st.sidebar.selectbox("Region for output dialect", regions)
 
 custom_joke_type = ""
@@ -63,6 +72,3 @@ if st.button("Translate and Generate Joke"):
         st.write("Joke:", joke)
     else:
         st.write("Please enter some text.")
-if st.button("Clear"):
-    text = ""
-    st.empty()
