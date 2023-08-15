@@ -9,7 +9,7 @@ def detect_language(text):
     return detect(text)
 
 def translate(text, target_language, model_name, temperature): 
-    prompt =f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}:\n{text}"
+    prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model_name,
@@ -18,8 +18,8 @@ def translate(text, target_language, model_name, temperature):
     )
     return response.choices[0].message["content"]
 
-def generate_joke(text, model_name, temperature): 
-    prompt =f"Create a puzzle-like joke based on this text:\n{text}"
+def generate_joke(text, model_name, temperature, joke_type): 
+    prompt = f"Create a {joke_type} joke based on this text:\n{text}" if joke_type else f"Create a joke based on this text:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model_name,
@@ -36,16 +36,18 @@ st.markdown(
 """
 )
 
-# Sidebar for model selection and temperature
+# Sidebar for options
+st.sidebar.title("オプション設定")
 model_name = st.sidebar.radio('Choose a language model', ['gpt-4', 'gpt-3.5-turbo'])
 temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.7)
+joke_type = st.sidebar.text_input('ジョークの種類', 'puzzle-like')
 
 text = st.text_input("Enter some text")
 if st.button("Translate and Generate Joke"):
     if text:
         target_language = 'ja' if detect_language(text) == 'en' else 'en'
         translation = translate(text, target_language, model_name, temperature)
-        joke = generate_joke(text, model_name, temperature)
+        joke = generate_joke(text, model_name, temperature, joke_type)
         st.write("Translation:", translation)
         st.write("Joke:", joke)
     else:
