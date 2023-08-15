@@ -40,7 +40,7 @@ st.markdown(
 st.sidebar.title("オプション設定")
 model_name = st.sidebar.radio('言語モデル', ['gpt-3.5-turbo','gpt-4'])
 temperature = st.sidebar.slider('創造性（Temperature）', 0.0, 1.0, 0.7)
-joke_type = st.sidebar.selectbox('ジョークの種類', ['なにも指定しない', 'funny', 'heartworming', 'clean', 'childish', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'dirty', 'self-deprecating', 'Potty'])
+joke_type = st.sidebar.selectbox('ジョークの種類', ['なにも指定しない', 'funny', 'heartworming', 'clean', 'childish', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad',  'kansai region of Japan', 'dirty', 'self-deprecating', 'Potty'])
 
 text = st.text_input("Enter some text")
 if st.button("Translate and Generate Joke"):
