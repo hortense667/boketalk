@@ -9,8 +9,15 @@ def detect_language(text):
     return detect(text)
 
 def translate(text, target_language, model_name, temperature, region): 
-    translation_style = " in Kansai dialect" if region == "kansai region of Japan" else ""
-    prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}{translation_style}:\n{text}"
+    translation_styles = {
+        'Standard': '',
+        'Osaka': ' in Osaka dialect',
+        'Nagoya': ' in Nagoya dialect',
+        'Kagoshima': ' in Kagoshima dialect',
+        'Tsugaru': ' in Tsugaru dialect',
+        'Okinawa': ' in Okinawa dialect'
+    }
+    prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese' if target_language == 'ja' else 'English'}{translation_styles[region]}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model_name,
@@ -20,8 +27,15 @@ def translate(text, target_language, model_name, temperature, region):
     return response.choices[0].message["content"]
 
 def generate_joke(text, model_name, temperature, joke_type, region):
-    joke_style = " in Kansai style" if region == "kansai region of Japan" else ""
-    prompt = f"Create a {joke_type} joke based on this text{joke_style}:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a joke based on this text{joke_style}:\n{text}"
+    joke_styles = {
+        'Standard': '',
+        'Osaka': ' in Osaka style',
+        'Nagoya': ' in Nagoya style',
+        'Kagoshima': ' in Kagoshima style',
+        'Tsugaru': ' in Tsugaru style',
+        'Okinawa': ' in Okinawa style'
+    }
+    prompt = f"Create a {joke_type} joke based on this text{joke_styles[region]}:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a joke based on this text{joke_styles[region]}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model_name,
@@ -44,7 +58,7 @@ model_name = st.sidebar.radio('言語モデル', ['gpt-4', 'gpt-3.5-turbo'])
 temperature = st.sidebar.slider('創造性（Temperature）', 0.0, 1.0, 0.7)
 joke_type_options = ['なにも指定しない', '自分で指定する', 'funny', 'heartworming', 'clean', 'childish', 'puzzle-like', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'dirty', 'self-deprecating', 'Potty']
 joke_type = st.sidebar.selectbox('ジョークの種類', joke_type_options)
-region_options = ['Standard', 'kansai region of Japan']
+region_options = ['Standard', 'Osaka', 'Nagoya', 'Kagoshima', 'Tsugaru', 'Okinawa']
 region = st.sidebar.selectbox('地域オプション', region_options)
 
 custom_joke_type = ""
@@ -64,4 +78,3 @@ if st.button("Translate and Generate Joke"):
         st.write("Joke:", joke)
     else:
         st.write("Please enter some text.")
-
