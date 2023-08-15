@@ -24,10 +24,9 @@ def generate_joke(text):
 #    
 
 #    
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=messages,
-        temperature=0.7, # this is the degree of randomness of the model's output
+    llm = select_model()
+    response = llm(
+        messages=messages
     )
     return response.choices[0].message["content"]
 
@@ -60,7 +59,7 @@ def select_model():
     # 初期値は0.0、刻み幅は0.1とする
     temperature = st.sidebar.slider("Temperature:", min_value=0.0, max_value=2.0, value=0.0, step=0.01)
 
-    return ChatOpenAI(temperature=temperature, model_name=model_name)
+    return openai.ChatCompletion.create(temperature=temperature, model=model_name)
 
 # サイドバーのタイトルを表示
 st.sidebar.title("Options")
@@ -73,7 +72,7 @@ st.sidebar.title("Options")
 #    st.sidebar.markdown(f"- ${i+0.01}")  # 説明のためのダミー
 
 #サイドバーからモデルを選ぶ
-llm = select_model()
+#llm = select_model()
 #コストはいま使わないので不要
 #init_messages()
 
