@@ -54,7 +54,7 @@ st.markdown(
 st.sidebar.title("オプション設定")
 model_name = st.sidebar.radio('言語モデル', ['gpt-4', 'gpt-3.5-turbo'])
 temperature = st.sidebar.slider('創造性（Temperature）', 0.0, 1.0, 0.7)
-joke_type_options = ['なにも指定しない', '自分で指定する', 'funny', 'heartworming', 'clean', 'childish', 'puzzle-like', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'dirty', 'self-deprecating', 'Potty']
+joke_type_options = ['なにも指定しない', '自分で指定する', 'funny', 'heartworming', 'clean', 'childish', 'puzzle-like', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'silly', 'dirty', 'self-deprecating', 'dark', 'Potty']
 joke_type = st.sidebar.selectbox('ジョークの種類', joke_type_options)
 region_options = ['Standard', 'Osaka', 'Nagoya', 'Kagoshima', 'Tsugaru']
 region = st.sidebar.selectbox('地域オプション', region_options)
