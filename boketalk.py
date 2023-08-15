@@ -11,10 +11,10 @@ def detect_language(text):
 def translate(text, target_language, model_name, temperature, region): 
     translation_styles = {
         'Standard': '',
-        'Osaka': ' 大阪弁で',
-        'Nagoya': ' 名古屋弁で',
-        'Kagoshima': ' 鹿児島弁で',
-        'Tsugaru': ' 津軽弁で'
+        'Osaka': ' in 大阪弁',
+        'Nagoya': ' in 名古屋弁',
+        'Kagoshima': ' in 鹿児島弁',
+        'Tsugaru': ' in 津軽弁'
     }
     prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese' if target_language == 'ja' else 'English'}{translation_styles[region]}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
@@ -28,10 +28,10 @@ def translate(text, target_language, model_name, temperature, region):
 def generate_joke(text, model_name, temperature, joke_type, region):
     joke_styles = {
         'Standard': '',
-        'Osaka': ' 大阪弁で',
-        'Nagoya': ' 名古屋弁で',
-        'Kagoshima': ' 鹿児島弁で',
-        'Tsugaru': ' 津軽弁で'
+        'Osaka': ' in 大阪弁',
+        'Nagoya': ' in 名古屋弁',
+        'Kagoshima': ' in 鹿児島弁',
+        'Tsugaru': ' in 津軽弁'
     }
     prompt = f"Create a {joke_type} joke based on this text{joke_styles[region]}:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a joke based on this text{joke_styles[region]}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
