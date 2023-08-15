@@ -33,7 +33,9 @@ def translate(text, target_language, model, temperature, region):
     )
     return response.choices[0].message["content"]
 
-def generate_joke(prompt, model, temperature):
+def generate_joke(prompt, model, temperature, region):
+    joke_style = f" in {region} style" if region != "Standard" else ""
+    prompt += joke_style
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model,
@@ -95,7 +97,7 @@ if st.button("Translate and Generate Joke"):
         target_language = 'ja' if detect_language(text) == 'en' else 'en'
         translation = translate(text, target_language, model_name, temperature, selected_region)
         joke_prompt = f"Create a {selected_joke_type} joke based on this text:\n{text}" if selected_joke_type != "なにも指定しない" else f"Create a joke based on this text:\n{text}"
-        joke = generate_joke(joke_prompt, model_name, temperature)
+        joke = generate_joke(joke_prompt, model_name, temperature, selected_region)
         st.write("Translation:", translation)
         st.write("Joke:", joke)
     else:
