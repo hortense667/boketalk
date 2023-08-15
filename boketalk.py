@@ -38,8 +38,8 @@ st.markdown(
 
 # Sidebar for options
 st.sidebar.title("オプション設定")
-model_name = st.sidebar.radio('Choose a language model', ['gpt-4', 'gpt-3.5-turbo'])
-temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.7)
+model_name = st.sidebar.radio('言語モデル', ['gpt-4', 'gpt-3.5-turbo'])
+temperature = st.sidebar.slider('Temperature（大きいほど創造的）', 0.0, 1.0, 0.7)
 joke_type = st.sidebar.text_input('ジョークの種類', 'puzzle-like')
 
 text = st.text_input("Enter some text")
