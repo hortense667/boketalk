@@ -11,11 +11,10 @@ def detect_language(text):
 def translate(text, target_language, model_name, temperature, region): 
     translation_styles = {
         'Standard': '',
-        'Osaka': ' in Osaka dialect',
-        'Nagoya': ' in Nagoya dialect',
-        'Kagoshima': ' in Kagoshima dialect',
-        'Tsugaru': ' in Tsugaru dialect',
-        'Okinawa': ' in Okinawa dialect'
+        'Osaka': ' 大阪弁で',
+        'Nagoya': ' 名古屋弁で',
+        'Kagoshima': ' 鹿児島弁で',
+        'Tsugaru': ' 津軽弁で'
     }
     prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese' if target_language == 'ja' else 'English'}{translation_styles[region]}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
@@ -29,11 +28,10 @@ def translate(text, target_language, model_name, temperature, region):
 def generate_joke(text, model_name, temperature, joke_type, region):
     joke_styles = {
         'Standard': '',
-        'Osaka': ' in Osaka style',
-        'Nagoya': ' in Nagoya style',
-        'Kagoshima': ' in Kagoshima style',
-        'Tsugaru': ' in Tsugaru style',
-        'Okinawa': ' in Okinawa style'
+        'Osaka': ' 大阪弁で',
+        'Nagoya': ' 名古屋弁で',
+        'Kagoshima': ' 鹿児島弁で',
+        'Tsugaru': ' 津軽弁で'
     }
     prompt = f"Create a {joke_type} joke based on this text{joke_styles[region]}:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a joke based on this text{joke_styles[region]}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
@@ -58,7 +56,7 @@ model_name = st.sidebar.radio('言語モデル', ['gpt-4', 'gpt-3.5-turbo'])
 temperature = st.sidebar.slider('創造性（Temperature）', 0.0, 1.0, 0.7)
 joke_type_options = ['なにも指定しない', '自分で指定する', 'funny', 'heartworming', 'clean', 'childish', 'puzzle-like', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'dirty', 'self-deprecating', 'Potty']
 joke_type = st.sidebar.selectbox('ジョークの種類', joke_type_options)
-region_options = ['Standard', 'Osaka', 'Nagoya', 'Kagoshima', 'Tsugaru', 'Okinawa']
+region_options = ['Standard', 'Osaka', 'Nagoya', 'Kagoshima', 'Tsugaru']
 region = st.sidebar.selectbox('地域オプション', region_options)
 
 custom_joke_type = ""
