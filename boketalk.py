@@ -18,8 +18,9 @@ def translate(text, target_language, model_name, temperature):
     )
     return response.choices[0].message["content"]
 
-def generate_joke(text, model_name, temperature, joke_type): 
-    prompt = f"Create a {joke_type} joke based on this text:\n{text}" if joke_type != 'なにも指定しない' else f"Create a joke based on this text:\n{text}"
+def generate_joke(text, model_name, temperature, joke_type, region): 
+    kansai_prefix = "関西弁で" if region == "kansai region of Japan" else ""
+    prompt = f"Create a {kansai_prefix} {joke_type} joke based on this text:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a {kansai_prefix} joke based on this text:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model_name,
@@ -38,16 +39,26 @@ st.markdown(
 
 # Sidebar for options
 st.sidebar.title("オプション設定")
-model_name = st.sidebar.radio('言語モデル', ['gpt-3.5-turbo','gpt-4'])
-temperature = st.sidebar.slider('創造性（Temperature）', 0.0, 1.0, 0.7)
-joke_type = st.sidebar.selectbox('ジョークの種類', ['なにも指定しない', 'funny', 'heartworming', 'clean', 'childish', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad',  'kansai region of Japan', 'dirty', 'self-deprecating', 'Potty'])
+model_name = st.sidebar.radio('Choose a language model', ['gpt-4', 'gpt-3.5-turbo'])
+temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.7)
+joke_type_options = ['なにも指定しない', '自分で指定する', 'funny', 'heartworming', 'clean', 'childish', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'dirty', 'self-deprecating', 'Potty']
+joke_type = st.sidebar.selectbox('ジョークの種類', joke_type_options)
+regions = ["Standard", "kansai region of Japan"]
+region = st.sidebar.selectbox("Region for output dialect", regions)
+
+custom_joke_type = ""
+if joke_type == '自分で指定する':
+    custom_joke_type = st.sidebar.text_input("ジョークの種類を指定してください")
 
 text = st.text_input("Enter some text")
 if st.button("Translate and Generate Joke"):
     if text:
         target_language = 'ja' if detect_language(text) == 'en' else 'en'
         translation = translate(text, target_language, model_name, temperature)
-        joke = generate_joke(text, model_name, temperature, joke_type)
+        
+        joke_type_to_use = custom_joke_type if joke_type == '自分で指定する' else joke_type
+        joke = generate_joke(text, model_name, temperature, joke_type_to_use, region)
+        
         st.write("Translation:", translation)
         st.write("Joke:", joke)
     else:
