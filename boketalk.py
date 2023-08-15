@@ -8,39 +8,25 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 def detect_language(text):
     return detect(text)
 
-def translate(text, target_language, model, temperature, region):
-    translation_style = ""
-    if region == "Osaka":
-        translation_style = " in Osaka dialect"
-    elif region == "Kyoto":
-        translation_style = " in Kyoto dialect"
-    elif region == "Nagoya":
-        translation_style = " in Nagoya dialect"
-    elif region == "Kagoshima":
-        translation_style = " in Kagoshima dialect"
-    elif region == "Tsugaru":
-        translation_style = " in Tsugaru dialect"
-    elif region == "Okinawa":
-        translation_style = " in Okinawa dialect"
-    # Add more dialects or regions as needed
-
-    prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese' if target_language == 'ja' else 'English'}{translation_style}:\n{text}"
+def translate(text, target_language, model_name, temperature, region): 
+    translation_style = " in Kansai dialect" if region == "kansai region of Japan" else ""
+    prompt = f"Translate the following {'English' if target_language == 'ja' else 'Japanese'} text to {'Japanese／日本語でお願いします。' if target_language == 'ja' else 'English'}{translation_style}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
-        model=model,
+        model=model_name,
         messages=messages,
-        temperature=temperature
+        temperature=temperature,
     )
     return response.choices[0].message["content"]
 
-def generate_joke(prompt, model, temperature, region):
-    joke_style = f" {region} style" if region != "Standard" else ""
-    prompt += joke_style
+def generate_joke(text, model_name, temperature, joke_type, region):
+    joke_style = " in Kansai style" if region == "kansai region of Japan" else ""
+    prompt = f"Create a {joke_type} joke based on this text{joke_style}:\n{text}" if joke_type not in ['なにも指定しない', '自分で指定する'] else f"Create a joke based on this text{joke_style}:\n{text}"
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
-        model=model,
+        model=model_name,
         messages=messages,
-        temperature=temperature
+        temperature=temperature,
     )
     return response.choices[0].message["content"]
 
@@ -48,56 +34,32 @@ st.title("TOKYO Boke Talk／東京ボケトーク")
 
 st.markdown(
 """
--- ver.0.291 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)　 
+-- ver.0.291 -- 2023/08/15 [@hortense667](https://twitter.com/hortense667)
 """
 )
 
-text = st.text_input("Enter some text")
-
-# Sidebar configuration
+# Sidebar for options
 st.sidebar.title("オプション設定")
-model_options = ["gpt-4", "gpt-3.5-turbo"]
-model_name = st.sidebar.radio("Select a model:", model_options)
-temperature = st.sidebar.slider("Set the temperature:", 0.0, 1.0, 0.7)
+model_name = st.sidebar.radio('Choose a language model', ['gpt-4', 'gpt-3.5-turbo'])
+temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.7)
+joke_type_options = ['なにも指定しない', '自分で指定する', 'funny', 'heartworming', 'clean', 'childish', 'witty', 'highbrow', 'droll', 'parody', 'surreal or absurd', 'dad', 'dirty', 'self-deprecating', 'Potty']
+joke_type = st.sidebar.selectbox('ジョークの種類', joke_type_options)
+region_options = ['Standard', 'kansai region of Japan']
+region = st.sidebar.selectbox('Region', region_options)
 
-joke_type_options = [
-    "なにも指定しない",
-    "自分で指定する",
-    "funny",
-    "heartwarming",
-    "clean",
-    "childish",
-    "witty",
-    "highbrow",
-    "droll",
-    "parody",
-    "surreal or absurd",
-    "dad",
-    "dirty",
-    "self-deprecating",
-    "Potty",
-]
-selected_joke_type = st.sidebar.selectbox("ジョークの種類", joke_type_options)
-if selected_joke_type == "自分で指定する":
-    selected_joke_type = st.sidebar.text_input("Specify your type:")
+custom_joke_type = ""
+if joke_type == '自分で指定する':
+    custom_joke_type = st.sidebar.text_input("ジョークの種類を指定してください")
 
-region_options = [
-    "Standard",
-    "Osaka",
-    "Kyoto",
-    "Nagoya",
-    "Kagoshima",
-    "Tsugaru",
-    "Okinawa",
-]
-selected_region = st.sidebar.selectbox("Select a region:", region_options)
-
+text = st.text_input("Enter some text")
 if st.button("Translate and Generate Joke"):
     if text:
         target_language = 'ja' if detect_language(text) == 'en' else 'en'
-        translation = translate(text, target_language, model_name, temperature, selected_region)
-        joke_prompt = f"Create a {selected_joke_type} joke based on this text:\n{text}" if selected_joke_type != "なにも指定しない" else f"Create a joke based on this text:\n{text}"
-        joke = generate_joke(joke_prompt, model_name, temperature, selected_region)
+        translation = translate(text, target_language, model_name, temperature, region)
+        
+        joke_type_to_use = custom_joke_type if joke_type == '自分で指定する' else joke_type
+        joke = generate_joke(text, model_name, temperature, joke_type_to_use, region)
+        
         st.write("Translation:", translation)
         st.write("Joke:", joke)
     else:
